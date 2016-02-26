@@ -19,9 +19,14 @@ class NewVisitorTest(unittest.TestCase):
         self.assertIn('Innovation Platform', self.browser.title)
         self.fail('Finish the test')
 
-        # He is invited to go to our RStudio site
+        # He is invited to go to our RStudio site and to a list of Shiny Applications
 
         # He selects the RStudio link and now find himself on the Rstudio site
+
+        # He goes back to the innovation home site and selects one of the shiny applications
+        # He now finds himself on a page showing a chart
+
+
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
