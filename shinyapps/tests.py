@@ -13,5 +13,5 @@ class ShinyPageTest(TestCase):
     def test_shiny_page_returns_correct_html(self):
         request = HttpRequest()
         response = shiny_page(request)
-        expected_html = render_to_string('shiny.html')
+        expected_html = render_to_string('shiny_home.html')
         self.assertEqual(response.content.decode(), expected_html)
