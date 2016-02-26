@@ -19,12 +19,12 @@ class NewVisitorTest(unittest.TestCase):
         self.assertIn('Innovation Platform', self.browser.title)
         self.fail('Finish the test')
 
-        # He is invited to go to our RStudio site and to a list of Shiny Applications
+        # He is invited to go to our RStudio site and to our Shiny Applications site
 
         # He selects the RStudio link and now find himself on the Rstudio site
 
-        # He goes back to the innovation home site and selects one of the shiny applications
-        # He now finds himself on a page showing a chart
+        # He goes back to the innovation home site and selects the shiny applications site
+        # He now finds himself on a page showing a list of Shiny Applications
 
 
 
