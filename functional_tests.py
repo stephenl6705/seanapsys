@@ -38,7 +38,23 @@ class NewVisitorTest(unittest.TestCase):
         self.assertIn('Shiny Apps', self.browser.title)
 
         # He now finds himself on a page showing a list of Shiny Applications
-        self.fail('Finish the test')
+        shinyapp1 = self.browser.find_element_by_id('id_shinyapp1')
+        shinyapp1_link = shinyapp1.find_element_by_tag_name('a')
+        self.assertEqual(shinyapp1_link.text,"Hello App","The link was:\n%s" % (shinyapp1_link.text,))
+        shinyapp1_link.click()
+        self.browser.implicitly_wait(3)
+        self.assertIn("It's Alive!", self.browser.title)
+
+        # Isaac is now also curious about the other app that he saw
+        self.browser.get('http://innovation.seanapsys.com/shinyapps')
+        shinyapp2 = self.browser.find_element_by_id('id_shinyapp2')
+        shinyapp2_link = shinyapp2.find_element_by_tag_name('a')
+        self.assertEqual(shinyapp2_link.text,"Movie Explorer","The link was:\n%s" % (shinyapp2_link.text,))
+        shinyapp2_link.click()
+        self.browser.implicitly_wait(3)
+        self.assertIn("Movie explorer", self.browser.title)
+
+#        self.fail('Finish the test')
 
 
 
