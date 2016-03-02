@@ -10,7 +10,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
     def setUpClass(cls):
         for arg in sys.argv:
             if 'liveserver' in arg:
-                cls.server_url = 'https://' + arg.split('=')[1]
+                cls.server_url = 'http://' + arg.split('=')[1]
                 return
         cls.server_url = 'http://innovation.seanapsys.com'
 
@@ -67,6 +67,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         shinyapps = self.browser.find_element_by_id('id_shinyapps')
         shinyapps_link = shinyapps.find_element_by_tag_name('a')
         shinyapps_link.click()
+        self.browser.implicitly_wait(waittime)
         shinyapp2 = self.browser.find_element_by_id('id_shinyapp2')
         shinyapp2_link = shinyapp2.find_element_by_tag_name('a')
         self.assertEqual(shinyapp2_link.text,"Movie Explorer","The link was:\n%s" % (shinyapp2_link.text,))
