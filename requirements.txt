@@ -1,0 +1,4 @@
+-f /usr/share/pip-wheels
+Django==1.8.4
+selenium==2.52.0
+wheel==0.26.0
