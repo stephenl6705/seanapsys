@@ -29,6 +29,13 @@ class NewVisitorTest(StaticLiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
 
+
+    def get_shinyapps_link(self):
+        self.browser.get(self.server_url)
+        shinyapps = self.browser.find_element_by_id('id_shinyapps')
+        return shinyapps.find_element_by_tag_name('a')
+
+
     def test_can_link_to_r_studio_site(self):
 
         # Isaac has heard about a cool new innovation platform. He goes and checks out the homepage
@@ -50,9 +57,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
     def test_can_link_to_shiny_site(self):
 
         # Isaac goes back to the innovation home site and selects the shiny applications site
-        self.browser.get(self.server_url)
-        shinyapps = self.browser.find_element_by_id('id_shinyapps')
-        shinyapps_link = shinyapps.find_element_by_tag_name('a')
+        shinyapps_link = self.get_shinyapps_link()
         self.assertEqual(shinyapps_link.text,"Shiny Apps","The link was:\n%s" % (shinyapps_link.text,))
         shinyapps_link.click()
         self.browser.implicitly_wait(waittime)
@@ -62,9 +67,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
     def test_can_link_to_shinyapp1_site(self):
 
         # Isaac is now also curious about the first app that he saw
-        self.browser.get(self.server_url)
-        shinyapps = self.browser.find_element_by_id('id_shinyapps')
-        shinyapps_link = shinyapps.find_element_by_tag_name('a')
+        shinyapps_link = self.get_shinyapps_link()
         shinyapps_link.click()
         #self.browser.implicitly_wait(waittime)
         shinyapp1 = self.browser.find_element_by_id('id_shinyapp1')
@@ -77,9 +80,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
     def test_can_link_to_shinyapp2_site(self):
 
         # Isaac is now also curious about the second app that he saw
-        self.browser.get(self.server_url)
-        shinyapps = self.browser.find_element_by_id('id_shinyapps')
-        shinyapps_link = shinyapps.find_element_by_tag_name('a')
+        shinyapps_link = self.get_shinyapps_link()
         shinyapps_link.click()
         self.browser.implicitly_wait(waittime)
         shinyapp2 = self.browser.find_element_by_id('id_shinyapp2')
@@ -93,9 +94,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
         # Isaac noticed on the ShinyApps screen that there was a login option
         # so he goes back to the ShinyApps page to check it out
-        self.browser.get(self.server_url)
-        shinyapps = self.browser.find_element_by_id('id_shinyapps')
-        shinyapps_link = shinyapps.find_element_by_tag_name('a')
+        shinyapps_link = self.get_shinyapps_link()
         shinyapps_link.click()
         self.browser.implicitly_wait(waittime)
 
