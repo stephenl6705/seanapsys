@@ -1,3 +1,4 @@
+from shinyapps.models import Item
 from django.template.loader import render_to_string
 from django.core.urlresolvers import resolve
 from django.test import TestCase
@@ -52,3 +53,22 @@ class ShinyPageTest(TestCase):
         )
         self.assertEqual(response.content.decode(), expected_html)
 
+class ShinyModelTest(TestCase):
+
+    def test_saving_and_retrieving_shinyapps(self):
+
+        first_item = Item()
+        first_item.name = 'Hello App'
+        first_item.save()
+
+        second_item = Item()
+        second_item.name = 'Movie Explorer'
+        second_item.save()
+
+        saved_items = Item.objects.all()
+        self.assertEqual(saved_items.count(), 2)
+
+        first_saved_item = saved_items[0]
+        second_saved_item = saved_items[1]
+        self.assertEqual(first_saved_item.name, 'Hello App')
+        self.assertEqual(second_saved_item.name, 'Movie Explorer')
