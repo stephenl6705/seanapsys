@@ -50,7 +50,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
     @skip
     def test_can_link_to_shiny_site(self):
 
-        # He goes back to the innovation home site and selects the shiny applications site
+        # Isaac goes back to the innovation home site and selects the shiny applications site
         self.browser.get(self.server_url)
         shinyapps = self.browser.find_element_by_id('id_shinyapps')
         shinyapps_link = shinyapps.find_element_by_tag_name('a')
@@ -60,6 +60,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         # He now finds himself on a page showing a list of Shiny Applications
         self.assertIn('Shiny Apps', self.browser.title)
 
+    @skip
     def test_can_link_to_shinyapp1_site(self):
 
         # Isaac is now also curious about the first app that he saw
@@ -91,7 +92,28 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.browser.implicitly_wait(waittime)
         self.assertIn("Movie explorer", self.browser.title)
 
-#        self.fail('Finish the test')
+    def test_can_login_on_shinyapps_screen(self):
+
+        # Isaac noticed on the ShinyApps screen that there was a login option with a text saying
+        # To access your private apps please login here
+        self.browser.get(self.server_url)
+        shinyapps = self.browser.find_element_by_id('id_shinyapps')
+        shinyapps_link = shinyapps.find_element_by_tag_name('a')
+        shinyapps_link.click()
+        self.browser.implicitly_wait(waittime)
+        login = self.browser.find_element_by_id('id_login')
+        login_link = login.find_element_by_tag_name('a')
+        self.assertEqual(login_link.text,"Login here","The link was:\n%s" % (login_link.text,))
+
+        # He clicks on login and is asked for a username and password
+        login_link.click()
+        self.browser.implicitly_wait(waittime)
+        self.assertIn('Shiny Apps', self.browser.title)
+        self.fail('Finish the test')
+        # He now finds a list of additional Shiny Applications
+
+
+
 
 
 
