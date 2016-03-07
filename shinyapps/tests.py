@@ -27,7 +27,11 @@ class ShinyPageTest(TestCase):
 
         expected_html = render_to_string(
             'shiny_home.html',
-            {'new_shinyapp': 'Movie Explorer'}
+            {'shinyapp_id': 'id_shinyapp2',
+                'username': 'langestrst01',
+                'shinyapp_dirname': 'movie_explorer',
+                'shinyapp_name': 'Movie Explorer',
+            }
         )
         self.assertEqual(response.content.decode(), expected_html)
 
@@ -39,7 +43,12 @@ class ShinyPageTest(TestCase):
 
         expected_html = render_to_string(
             'shiny_home.html',
-            {'new_shinyapp': 'Hello App'}
+            {
+                'shinyapp_id': 'id_shinyapp1',
+                'username': 'ruser',
+                'shinyapp_dirname': 'hello',
+                'shinyapp_name': 'Hello App',
+            }
         )
         self.assertEqual(response.content.decode(), expected_html)
 

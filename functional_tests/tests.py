@@ -4,7 +4,7 @@ import sys
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 
-waittime = 3
+waittime = 5
 
 class NewVisitorTest(StaticLiveServerTestCase):
 
@@ -61,9 +61,38 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertEqual(shinyapps_link.text,"Shiny Apps","The link was:\n%s" % (shinyapps_link.text,))
         shinyapps_link.click()
         self.browser.implicitly_wait(waittime)
-        # He now finds himself on a page showing a list of Shiny Applications
+        # He now finds himself on a page showing Shiny Applications
         self.assertIn('Shiny Apps', self.browser.title)
 
+    def test_can_login_on_shinyapps_screen(self):
+
+        # Isaac noticed on the ShinyApps screen that there was a login option
+        # so he goes back to the ShinyApps page to check it out
+        shinyapps_link = self.get_shinyapps_link()
+        shinyapps_link.click()
+        self.browser.implicitly_wait(waittime)
+        # On the login option it says to enter the username
+        inputbox = self.browser.find_element_by_id('id_login')
+        self.assertEqual(inputbox.get_attribute('placeholder'),'Enter username')
+        # He enters his papas username and hits enter
+        inputbox.send_keys('langestrst01')
+        inputbox.send_keys(Keys.ENTER)
+        # He now notices that there is an app called Movie Explorer
+        shinyapp2 = self.browser.find_element_by_id('id_shinyapp2')
+        shinyapp2_link = shinyapp2.find_element_by_tag_name('a')
+        self.assertEqual(shinyapp2_link.text,"Movie Explorer","The link was:\n%s" % (shinyapp2_link.text,))
+        # He clicks on the link and is directed to the Movie Explorer app
+        shinyapp2_link.click()
+        self.browser.implicitly_wait(waittime)
+        self.assertIn("Movie explorer", self.browser.title)
+
+        #table = self.browser.find_element_by_id('id_shinyapps_table')
+        #rows = table.find_elements_by_tag_name('tr')
+        #self.assertIn('Movie Explorer', [row.text for row in rows])
+
+        #self.fail('Finish the test')
+
+    @skip
     def test_can_link_to_shinyapp1_site(self):
 
         # Isaac is now also curious about the first app that he saw
@@ -77,44 +106,6 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.browser.implicitly_wait(waittime)
         self.assertIn("Alive", self.browser.title)
 
-    def test_can_link_to_shinyapp2_site(self):
-
-        # Isaac is now also curious about the second app that he saw
-        shinyapps_link = self.get_shinyapps_link()
-        shinyapps_link.click()
-        self.browser.implicitly_wait(waittime)
-        shinyapp2 = self.browser.find_element_by_id('id_shinyapp2')
-        shinyapp2_link = shinyapp2.find_element_by_tag_name('a')
-        self.assertEqual(shinyapp2_link.text,"Movie Explorer","The link was:\n%s" % (shinyapp2_link.text,))
-        shinyapp2_link.click()
-        self.browser.implicitly_wait(waittime)
-        self.assertIn("Movie explorer", self.browser.title)
-
-    def test_can_login_on_shinyapps_screen(self):
-
-        # Isaac noticed on the ShinyApps screen that there was a login option
-        # so he goes back to the ShinyApps page to check it out
-        shinyapps_link = self.get_shinyapps_link()
-        shinyapps_link.click()
-        self.browser.implicitly_wait(waittime)
-
-        # On the login option it says to enter the username
-        # He clicks on login and is asked for a username and password
-        inputbox = self.browser.find_element_by_id('id_login')
-        self.assertEqual(inputbox.get_attribute('placeholder'),'Enter username')
-        # He enters his papas username and hits enter
-        inputbox.send_keys('langestrst01')
-        inputbox.send_keys(Keys.ENTER)
-        # He now notices that there is an new app called Movie Explorer
-        shinyapp2 = self.browser.find_element_by_id('id_shinyapp2')
-        shinyapp2_link = shinyapp2.find_element_by_tag_name('a')
-        self.assertEqual(shinyapp2_link.text,"Movie Explorer","The link was:\n%s" % (shinyapp2_link.text,))
-
-        #table = self.browser.find_element_by_id('id_shinyapps_table')
-        #rows = table.find_elements_by_tag_name('tr')
-        #self.assertIn('Movie Explorer', [row.text for row in rows])
-
-        self.fail('Finish the test')
 
 
 
