@@ -2,7 +2,7 @@ import sys
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 
-waittime = 5
+waittime = 0
 
 class NewVisitorTest(StaticLiveServerTestCase):
 
