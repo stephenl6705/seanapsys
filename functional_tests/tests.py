@@ -1,3 +1,4 @@
+from selenium.webdriver.common.keys import Keys
 from unittest import skip
 import sys
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
@@ -94,25 +95,33 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
     def test_can_login_on_shinyapps_screen(self):
 
-        # Isaac noticed on the ShinyApps screen that there was a login option with a text saying
-        # To access your private apps please login here
+        # Isaac noticed on the ShinyApps screen that there was a login option
+        # so he goes back to the ShinyApps page to check it out
         self.browser.get(self.server_url)
         shinyapps = self.browser.find_element_by_id('id_shinyapps')
         shinyapps_link = shinyapps.find_element_by_tag_name('a')
         shinyapps_link.click()
         self.browser.implicitly_wait(waittime)
-        login = self.browser.find_element_by_id('id_login')
-        login_link = login.find_element_by_tag_name('a')
-        self.assertEqual(login_link.text,"Login here","The link was:\n%s" % (login_link.text,))
 
+        # On the login option it says to enter the username
         # He clicks on login and is asked for a username and password
-        login_link.click()
-        self.browser.implicitly_wait(waittime)
-        self.assertIn('Shiny Apps', self.browser.title)
+        inputbox = self.browser.find_element_by_id('id_login')
+        self.assertEqual(inputbox.get_attribute('placeholder'),'Enter username')
+        # He enters his papas username and hits enter
+        inputbox.send_keys('langestrst01')
+        inputbox.send_keys(Keys.ENTER)
+        # He now notices that there is an new app called Movie Explorer
+        shinyapp2 = self.browser.find_element_by_id('id_shinyapp2')
+        shinyapp2_link = shinyapp2.find_element_by_tag_name('a')
+        self.assertEqual(shinyapp2_link.text,"Movie Explorer","The link was:\n%s" % (shinyapp2_link.text,))
+
+        #table = self.browser.find_element_by_id('id_shinyapps_table')
+        #rows = table.find_elements_by_tag_name('tr')
+        #self.assertTrue(
+        #    any(row.text == 'Movie Explorer' for row in rows)
+        #)
+
         self.fail('Finish the test')
-        # He now finds a list of additional Shiny Applications
-
-
 
 
 
