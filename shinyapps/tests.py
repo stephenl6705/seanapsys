@@ -15,3 +15,31 @@ class ShinyPageTest(TestCase):
         response = shiny_page(request)
         expected_html = render_to_string('shiny_home.html')
         self.assertEqual(response.content.decode(), expected_html)
+
+    def test_shiny_page_returns_correct_list_after_a_username_POST_request(self):
+        request = HttpRequest()
+        request.method = 'POST'
+        request.POST['username'] = 'langestrst01'
+
+        response = shiny_page(request)
+
+        self.assertIn('Movie Explorer', response.content.decode())
+
+        expected_html = render_to_string(
+            'shiny_home.html',
+            {'new_shinyapp': 'Movie Explorer'}
+        )
+        self.assertEqual(response.content.decode(), expected_html)
+
+        request.POST['username'] = 'ruser'
+
+        response = shiny_page(request)
+
+        self.assertIn('Hello App', response.content.decode())
+
+        expected_html = render_to_string(
+            'shiny_home.html',
+            {'new_shinyapp': 'Hello App'}
+        )
+        self.assertEqual(response.content.decode(), expected_html)
+

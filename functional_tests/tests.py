@@ -29,7 +29,6 @@ class NewVisitorTest(StaticLiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
 
-    @skip
     def test_can_link_to_r_studio_site(self):
 
         # Isaac has heard about a cool new innovation platform. He goes and checks out the homepage
@@ -48,7 +47,6 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.browser.implicitly_wait(waittime)
         self.assertIn('RStudio Sign In', self.browser.title)
 
-    @skip
     def test_can_link_to_shiny_site(self):
 
         # Isaac goes back to the innovation home site and selects the shiny applications site
@@ -61,7 +59,6 @@ class NewVisitorTest(StaticLiveServerTestCase):
         # He now finds himself on a page showing a list of Shiny Applications
         self.assertIn('Shiny Apps', self.browser.title)
 
-    @skip
     def test_can_link_to_shinyapp1_site(self):
 
         # Isaac is now also curious about the first app that he saw
@@ -77,7 +74,6 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.browser.implicitly_wait(waittime)
         self.assertIn("Alive", self.browser.title)
 
-    @skip
     def test_can_link_to_shinyapp2_site(self):
 
         # Isaac is now also curious about the second app that he saw
@@ -117,9 +113,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
         #table = self.browser.find_element_by_id('id_shinyapps_table')
         #rows = table.find_elements_by_tag_name('tr')
-        #self.assertTrue(
-        #    any(row.text == 'Movie Explorer' for row in rows)
-        #)
+        #self.assertIn('Movie Explorer', [row.text for row in rows])
 
         self.fail('Finish the test')
 
