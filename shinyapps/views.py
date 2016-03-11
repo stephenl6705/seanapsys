@@ -1,20 +1,15 @@
 from django.shortcuts import render
-#from django.models import Item
+from .models import ShinyGroup, ShinyItem
+from setup_db import save_selected_group, get_selected_item
 
 def shiny_page(request):
     if request.method == 'POST':
-        if request.POST.get('username','') == 'langestrst01':
-            return render(request, 'shiny_home.html', {
-                'shinyapp_id': 'id_shinyapp2',
-                'username': 'langestrst01',
-                'shinyapp_dirname': 'movie_explorer',
-                'shinyapp_name': 'Movie Explorer',
-            })
-        elif request.POST.get('username','') == 'ruser':
-            return render(request, 'shiny_home.html', {
-                'shinyapp_id': 'id_shinyapp1',
-                'username': 'ruser',
-                'shinyapp_dirname': 'hello',
-                'shinyapp_name': 'Hello App',
-            })
+        save_selected_group(ShinyGroup,request.POST.get('username',''),selected_status=True)
+        new_item = get_selected_item(ShinyItem,ShinyGroup)
+        return render(request, 'shiny_home.html', {
+            'shinyapp_id': new_item.itemid,
+            'username': new_item.group.username,
+            'shinyapp_dirname': new_item.dirname,
+            'shinyapp_name': new_item.name,
+        })
     return render(request, 'shiny_home.html')
