@@ -1,5 +1,5 @@
-from django.http import HttpResponse
 from django.shortcuts import render
+#from django.models import Item
 
 def shiny_page(request):
     if request.method == 'POST':

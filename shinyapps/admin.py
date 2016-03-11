@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import ShinyGroup, ShinyItem
 
-# Register your models here.
+admin.site.register(ShinyItem)
+admin.site.register(ShinyGroup)
