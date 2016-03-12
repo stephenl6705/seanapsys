@@ -23,47 +23,18 @@ class ShinyPageTest(TestCase):
         request = HttpRequest()
         setup_items(ShinyGroup, ShinyItem)
         request.method = 'POST'
+
         request.POST['username'] = 'langestrst01'
-
         save_selected_group(ShinyGroup,'langestrst01',selected_status=True)
-
         response = shiny_page(request)
-
-        new_item = get_selected_item(ShinyItem,ShinyGroup)
-        self.assertEqual(new_item.name, 'Movie Explorer')
-
+        self.assertIn('Hello App', response.content.decode())
         self.assertIn('Movie Explorer', response.content.decode())
-
-        expected_html = render_to_string(
-            'shiny_home.html',
-            {'shinyapp_id': 'id_shinyapp2',
-                'username': 'langestrst01',
-                'shinyapp_dirname': 'movie_explorer',
-                'shinyapp_name': 'Movie Explorer',
-            }
-        )
-        self.assertEqual(response.content.decode(), expected_html)
 
         request.POST['username'] = 'ruser'
         save_selected_group(ShinyGroup,'ruser',selected_status=True)
-
         response = shiny_page(request)
-
-        new_item = get_selected_item(ShinyItem,ShinyGroup)
-        self.assertEqual(new_item.name, 'Hello App')
-
         self.assertIn('Hello App', response.content.decode())
 
-        expected_html = render_to_string(
-            'shiny_home.html',
-            {
-                'shinyapp_id': 'id_shinyapp1',
-                'username': 'ruser',
-                'shinyapp_dirname': 'hello',
-                'shinyapp_name': 'Hello App',
-            }
-        )
-        self.assertEqual(response.content.decode(), expected_html)
 
 class ShinyModelTest(TestCase):
 

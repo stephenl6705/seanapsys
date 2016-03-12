@@ -5,6 +5,7 @@ def setup_items(Group, Item):
     group1 = Group.objects.create(username='langestrst01', selected=False)
     group2 = Group.objects.create(username='ruser', selected=False)
 
+    Item.objects.create(itemid="id_shinyapp1", name="Hello App", dirname="hello", group=group1)
     Item.objects.create(itemid="id_shinyapp2", name="Movie Explorer", dirname="movie_explorer", group=group1)
     Item.objects.create(itemid="id_shinyapp1", name="Hello App", dirname="hello", group=group2)
 

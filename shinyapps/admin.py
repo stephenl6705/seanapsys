@@ -1,5 +1,13 @@
 from django.contrib import admin
 from .models import ShinyGroup, ShinyItem
 
-admin.site.register(ShinyItem)
-admin.site.register(ShinyGroup)
+class ShinyItemAdmin(admin.ModelAdmin):
+    list_display = ('name', 'group', 'dirname', 'itemid')
+    list_filter = ('group',)
+    ordering = ['group', 'name']
+
+class ShinyGroupAdmin(admin.ModelAdmin):
+    list_display = ('username', 'selected')
+
+admin.site.register(ShinyItem, ShinyItemAdmin)
+admin.site.register(ShinyGroup, ShinyGroupAdmin)

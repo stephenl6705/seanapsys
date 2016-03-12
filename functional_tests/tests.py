@@ -77,11 +77,15 @@ class NewVisitorTest(StaticLiveServerTestCase):
         # He enters his papas username and hits enter
         inputbox.send_keys('langestrst01')
         inputbox.send_keys(Keys.ENTER)
-        # He now notices that there is an app called Movie Explorer
+        # He now notices that there are 2 apps
+        # The first app is the Hello App
+        shinyapp1 = self.browser.find_element_by_id('id_shinyapp1')
+        shinyapp1_link = shinyapp1.find_element_by_tag_name('a')
+        self.assertEqual(shinyapp1_link.text,"Hello App","The link was:\n%s" % (shinyapp1_link.text,))
+        # The second app is Movie Explorer and he decides to check it out
         shinyapp2 = self.browser.find_element_by_id('id_shinyapp2')
         shinyapp2_link = shinyapp2.find_element_by_tag_name('a')
         self.assertEqual(shinyapp2_link.text,"Movie Explorer","The link was:\n%s" % (shinyapp2_link.text,))
-        # He clicks on the link and is directed to the Movie Explorer app
         shinyapp2_link.click()
         self.browser.implicitly_wait(waittime)
         self.assertIn("Movie explorer", self.browser.title)
