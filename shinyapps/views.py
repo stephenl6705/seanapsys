@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import ShinyGroup, ShinyItem
+from shinyapps.models import ShinyGroup, ShinyItem
 from setup_db import save_selected_group
 
 def shiny_page(request):

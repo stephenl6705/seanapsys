@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ShinyGroup, ShinyItem
+from shinyapps.models import ShinyGroup, ShinyItem
 
 class ShinyItemAdmin(admin.ModelAdmin):
     list_display = ('name', 'group', 'dirname', 'itemid')
