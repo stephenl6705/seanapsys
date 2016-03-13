@@ -1,7 +1,32 @@
+
 body {
-  background: url(/static/background.jpg) no-repeat center center fixed;
-  -webkit-background-size: cover;
+  background: url(./background-no-nielsen-logo.jpg) no-repeat right center fixed;
+  /*background-color: #ccffff;*/
+/*  -webkit-background-size: cover;
   -moz-background-size: cover;
-  -o-background-size: cover;
+  -o-background-size: cover;*/
   background-size: cover;
+}
+h1 {
+    font-size: 40px;
+    line-height: 1.4;
+    font-weight: 100;
+    color: #e6e6e6;
+    width: 390px;
+    box-sizng: border-box;
+}
+.alt-headline {
+    font-size: 40px;
+}
+h2 {
+    font-size: 30px;
+    line-height: 1;
+    font-weight:italic;
+    color: blue;
+}
+td {
+    font-size: 30px;
+    line-height: 1.5;
+    font-weight:italic;
+    color: blue;
 }
