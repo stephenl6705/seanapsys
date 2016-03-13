@@ -42,7 +42,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.browser.get(self.server_url)
 
         # He notices the page title and header mention innovation platform
-        self.assertIn('Innovation Platform', self.browser.title)
+        self.assertIn('Modelling Platform', self.browser.title)
 
         # He is invited to go to our RStudio site and to our Shiny Applications site
         rstudio = self.browser.find_element_by_id('id_rstudio')
