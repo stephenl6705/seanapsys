@@ -5,7 +5,7 @@ from django.core.urlresolvers import resolve
 from django.test import TestCase
 from django.http import HttpRequest
 from shinyapps.views import shiny_page
-from setup_db import setup_items, save_selected_group, get_selected_item
+from setup_db import setup_items, save_selected_group
 
 class ShinyPageTest(TestCase):
 
@@ -18,6 +18,7 @@ class ShinyPageTest(TestCase):
         response = shiny_page(request)
         expected_html = render_to_string('shiny_home.html')
         self.assertEqual(response.content.decode(), expected_html)
+        self.assertIn('Hello App', response.content.decode())
 
     def test_shiny_page_returns_correct_list_after_a_username_POST_request(self):
         request = HttpRequest()

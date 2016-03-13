@@ -63,6 +63,10 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.browser.implicitly_wait(waittime)
         # He now finds himself on a page showing Shiny Applications
         self.assertIn('Shiny Apps', self.browser.title)
+        # He sees an app called Hello App
+        shinyapp1 = self.browser.find_element_by_id('id_shinyapp1')
+        shinyapp1_link = shinyapp1.find_element_by_tag_name('a')
+        self.assertEqual(shinyapp1_link.text,"Hello App","The link was:\n%s" % (shinyapp1_link.text,))
 
     def test_can_login_on_shinyapps_screen(self):
 
