@@ -54,6 +54,19 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.browser.implicitly_wait(waittime)
         self.assertIn('RStudio Sign In', self.browser.title)
 
+    def test_can_link_to_r_studio_google_site(self):
+
+        # Isaac goes back to the innovation home site and selects the RStudio cloud site
+        self.browser.get(self.server_url)
+        rstudio = self.browser.find_element_by_id('id_crstudio')
+        rstudio_link = rstudio.find_element_by_tag_name('a')
+        self.assertEqual(rstudio_link.text,"RStudio (cloud)","The link was:\n%s" % (rstudio_link.text,))
+
+        # He selects the RStudio cloud link and now find himself on the Rstudio cloud site
+        rstudio_link.click()
+        self.browser.implicitly_wait(waittime)
+        self.assertIn('RStudio Sign In', self.browser.title)
+
     def test_can_link_to_shiny_site(self):
 
         # Isaac goes back to the innovation home site and selects the shiny applications site
