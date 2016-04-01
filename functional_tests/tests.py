@@ -3,8 +3,7 @@ from unittest import skip
 import sys
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
-
-waittime = 5
+from selenium.webdriver.support.ui import WebDriverWait
 
 class NewVisitorTest(StaticLiveServerTestCase):
 
@@ -24,7 +23,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
-        self.browser.implicitly_wait(waittime)
+        self.browser.implicitly_wait(5)
 
     def tearDown(self):
         self.browser.quit()
@@ -34,6 +33,11 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.browser.get(self.server_url)
         shinyapps = self.browser.find_element_by_id('id_shinyapps')
         return shinyapps.find_element_by_tag_name('a')
+
+    def wait_for_window_with_title(self, text_in_title):
+        WebDriverWait(self.browser, timeout=30).until(
+            lambda b: text_in_title in b.title
+        )
 
 
     def test_can_link_to_r_studio_site(self):
@@ -51,9 +55,9 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
         # He selects the RStudio link and now find himself on the Rstudio site
         rstudio_link.click()
-        self.browser.implicitly_wait(waittime)
-        self.assertIn('RStudio Sign In', self.browser.title)
+        self.wait_for_window_with_title('RStudio Sign In')
 
+    @skip
     def test_can_link_to_r_studio_google_site(self):
 
         # Isaac goes back to the innovation home site and selects the RStudio cloud site
@@ -64,8 +68,8 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
         # He selects the RStudio cloud link and now find himself on the Rstudio cloud site
         rstudio_link.click()
-        self.browser.implicitly_wait(waittime)
-        self.assertIn('RStudio Sign In', self.browser.title)
+        self.wait_for_window_with_title('RStudio Sign In')
+
 
     def test_can_link_to_shiny_site(self):
 
@@ -73,9 +77,8 @@ class NewVisitorTest(StaticLiveServerTestCase):
         shinyapps_link = self.get_shinyapps_link()
         self.assertEqual(shinyapps_link.text,"Shiny Apps","The link was:\n%s" % (shinyapps_link.text,))
         shinyapps_link.click()
-        self.browser.implicitly_wait(waittime)
         # He now finds himself on a page showing Shiny Applications
-        self.assertIn('Shiny Apps', self.browser.title)
+        self.wait_for_window_with_title('Shiny Apps')
         # He sees an app called Hello App
         shinyapp1 = self.browser.find_element_by_id('id_shinyapp1')
         shinyapp1_link = shinyapp1.find_element_by_tag_name('a')
@@ -87,7 +90,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         # so he goes back to the ShinyApps page to check it out
         shinyapps_link = self.get_shinyapps_link()
         shinyapps_link.click()
-        self.browser.implicitly_wait(waittime)
+        self.wait_for_window_with_title('Shiny Apps')
         # On the login option it says to enter the username
         inputbox = self.browser.find_element_by_id('id_login')
         self.assertEqual(inputbox.get_attribute('placeholder'),'Enter username')
@@ -104,32 +107,37 @@ class NewVisitorTest(StaticLiveServerTestCase):
         shinyapp2_link = shinyapp2.find_element_by_tag_name('a')
         self.assertEqual(shinyapp2_link.text,"Movie Explorer","The link was:\n%s" % (shinyapp2_link.text,))
         shinyapp2_link.click()
-        self.browser.implicitly_wait(waittime)
-        self.assertIn("Movie explorer", self.browser.title)
+        self.wait_for_window_with_title('Movie explorer')
 
         #table = self.browser.find_element_by_id('id_shinyapps_table')
         #rows = table.find_elements_by_tag_name('tr')
         #self.assertIn('Movie Explorer', [row.text for row in rows])
 
+    def test_can_login_on_home_screen(self):
+        
+        # Isaac noticed that he can login on the home screen
+        # so he goes to the home screen and clicks on Log-in
+        self.browser.get(self.server_url)
+        user = self.browser.find_element_by_id('id_user')
+        login = user.find_element_by_tag_name('a')
+        self.assertEqual(login.text, 'Log-in')
+
+        # A login form opens and he enters papas username and password
+
+        inputbox = self.find_element_by_id('id_login')
+        self.assertEqual(inputbox.get_attribute('placeholder'),'Enter username')
+        inputbox.send_keys('langestrst01')
+        inputbox.send_keys(Keys.ENTER)
+        inputbox = self.find_element_by_id('id_password')
+        self.assertEqual(inputbox.get_attribute('placeholder'),'Enter password')
+        inputbox.send_keys('8976YHT@')
+
+        # He now notices a welcome message on the home page saying: Welcome, Stephen
+        user = self.browser.find_element_by_id('id_user')
+        self.assertEqual(user.text, "Welcome, Stephen")
+
         #self.fail('Finish the test')
-
-    @skip
-    def test_can_link_to_shinyapp1_site(self):
-
-        # Isaac is now also curious about the first app that he saw
-        shinyapps_link = self.get_shinyapps_link()
-        shinyapps_link.click()
-        #self.browser.implicitly_wait(waittime)
-        shinyapp1 = self.browser.find_element_by_id('id_shinyapp1')
-        shinyapp1_link = shinyapp1.find_element_by_tag_name('a')
-        self.assertEqual(shinyapp1_link.text,"Hello App","The link was:\n%s" % (shinyapp1_link.text,))
-        shinyapp1_link.click()
-        self.browser.implicitly_wait(waittime)
-        self.assertIn("Alive", self.browser.title)
-
-
-
-
+        
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
