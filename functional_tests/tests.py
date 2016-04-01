@@ -121,20 +121,44 @@ class NewVisitorTest(StaticLiveServerTestCase):
         user = self.browser.find_element_by_id('id_user')
         login = user.find_element_by_tag_name('a')
         self.assertEqual(login.text, 'Log-in')
+        login.click()
+        self.wait_for_window_with_title('Log-in')
 
-        # A login form opens and he enters papas username and password
+        # A login form opens and he simply enters
 
-        inputbox = self.find_element_by_id('id_login')
-        self.assertEqual(inputbox.get_attribute('placeholder'),'Enter username')
-        inputbox.send_keys('langestrst01')
-        inputbox.send_keys(Keys.ENTER)
-        inputbox = self.find_element_by_id('id_password')
-        self.assertEqual(inputbox.get_attribute('placeholder'),'Enter password')
-        inputbox.send_keys('8976YHT@')
+        inputbox = self.browser.find_element_by_id('id_username')
+        inputbox.send_keys('admin')
+        inputbox = self.browser.find_element_by_id('id_password')
+        inputbox.send_keys('admin')
+        inputbox = self.browser.find_element_by_id('id_login')
+        login = self.browser.find_element_by_id('id_login')
+        login.send_keys(Keys.ENTER)
+        self.wait_for_window_with_title('Modelling Platform')
 
-        # He now notices a welcome message on the home page saying: Welcome, Stephen
+        # He now notices a welcome message on the home page saying: Hello admin, logout
         user = self.browser.find_element_by_id('id_user')
-        self.assertEqual(user.text, "Welcome, Stephen")
+        login = user.find_element_by_tag_name('a')
+        self.assertEqual(login.text, "Hello admin, logout")
+        
+        # He clicks on Hello admin, logout and now enters Papas credentials and hits enter
+
+        user = self.browser.find_element_by_id('id_user')
+        login = user.find_element_by_tag_name('a')
+        login.click()
+        self.wait_for_window_with_title('Log-in')
+        
+        inputbox = self.browser.find_element_by_id('id_username')
+        inputbox.send_keys('langestrst01')
+        inputbox = self.browser.find_element_by_id('id_password')
+        inputbox.send_keys('8976YHT@')
+        login = self.browser.find_element_by_id('id_login')
+        login.send_keys(Keys.ENTER)
+        self.wait_for_window_with_title('Modelling Platform')
+
+        # He now notices a welcome message on the home page saying: Hello Stephen, logout
+        user = self.browser.find_element_by_id('id_user')
+        login = user.find_element_by_tag_name('a')
+        self.assertEqual(login.text, "Hello Stephen, logout")
 
         #self.fail('Finish the test')
         

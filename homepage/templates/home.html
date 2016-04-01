@@ -11,6 +11,15 @@
 <body>
 <div class="container-fluid">
     <section class="boxes row">
+        <div id=id_user class= "box_topics col-md-12">
+                <a href="/account/login">
+                    {% if request.user.is_authenticated %}
+                        Hello {{ request.user.first_name }}, logout
+                    {% else %}
+                        Log-in
+                    {% endif %}
+                </a>
+        </div>
         <div class= "box_topics col-md-12">
             <div id="site_links">
                 <a href="/" style="float: right"><img src="/static/logo.png" alt="Nielsen Logo"></a>
