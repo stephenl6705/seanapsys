@@ -1,7 +1,7 @@
 from .base import FunctionalTest
 from selenium.webdriver.common.keys import Keys
 
-class HomepageLoginTest(FunctionalTest):
+class UserLoginTest(FunctionalTest):
 
     def user_login_assert_equal(self,text):
         user = self.browser.find_element_by_id('id_user')
@@ -59,6 +59,31 @@ class HomepageLoginTest(FunctionalTest):
 
         # He now notices a welcome message on the home page saying: Hello Stephen, logout
         self.user_login_assert_equal('Hello Stephen, logout')
+
+    def test_can_login_and_logout_on_shinyapps_screen(self):
+
+        # Isaac goes to the Shiny apps page to see if he can login from there
+
+        self.browser.get(self.server_url)
+
+        self.get_shinyapps_link().click()
+        self.wait_for_window_with_title('Shiny Apps')
+        self.user_login_assert_equal('Log-in').click()
+        self.wait_for_window_with_title('Log-in')
+
+        # A login form opens and he simply enters
+
+        inputbox = self.browser.find_element_by_id('id_username')
+        inputbox.send_keys('admin')
+        inputbox = self.browser.find_element_by_id('id_password')
+        inputbox.send_keys('admin')
+        inputbox = self.browser.find_element_by_id('id_login')
+        login = self.browser.find_element_by_id('id_login')
+        login.send_keys(Keys.ENTER)
+        self.wait_for_window_with_title('Shiny Apps')
+
+        # He now notices a welcome message on the home page saying: Hello admin, logout
+        self.user_login_assert_equal('Hello admin, logout')
 
 
         #self.fail('Finish the test')
