@@ -9,6 +9,15 @@ class UserLoginTest(FunctionalTest):
         self.assertEqual(login.text, text)
         return login
 
+    def user_login(self,username,password):
+        inputbox = self.browser.find_element_by_id('id_username')
+        inputbox.send_keys(username)
+        inputbox = self.browser.find_element_by_id('id_password')
+        inputbox.send_keys(password)
+        inputbox = self.browser.find_element_by_id('id_login')
+        login = self.browser.find_element_by_id('id_login')
+        login.send_keys(Keys.ENTER)
+
     def test_can_login_and_logout_on_home_screen(self):
 
         # Isaac noticed that he can login on the home screen
@@ -19,15 +28,9 @@ class UserLoginTest(FunctionalTest):
         self.user_login_assert_equal('Log-in').click()
         self.wait_for_window_with_title('Log-in')
 
-        # A login form opens and he simply enters
+        # A login form opens and he used the admin credentials
 
-        inputbox = self.browser.find_element_by_id('id_username')
-        inputbox.send_keys('admin')
-        inputbox = self.browser.find_element_by_id('id_password')
-        inputbox.send_keys('admin')
-        inputbox = self.browser.find_element_by_id('id_login')
-        login = self.browser.find_element_by_id('id_login')
-        login.send_keys(Keys.ENTER)
+        self.user_login('admin','admin')
         self.wait_for_window_with_title('Modelling Platform')
 
         # He now notices a welcome message on the home page saying: Hello admin, logout
@@ -49,12 +52,7 @@ class UserLoginTest(FunctionalTest):
         login.click()
         self.wait_for_window_with_title('Log-in')
 
-        inputbox = self.browser.find_element_by_id('id_username')
-        inputbox.send_keys('langestrst01')
-        inputbox = self.browser.find_element_by_id('id_password')
-        inputbox.send_keys('8976YHT@')
-        login = self.browser.find_element_by_id('id_login')
-        login.send_keys(Keys.ENTER)
+        self.user_login('langestrst01','8976YHT@')
         self.wait_for_window_with_title('Modelling Platform')
 
         # He now notices a welcome message on the home page saying: Hello Stephen, logout
@@ -71,15 +69,9 @@ class UserLoginTest(FunctionalTest):
         self.user_login_assert_equal('Log-in').click()
         self.wait_for_window_with_title('Log-in')
 
-        # A login form opens and he simply enters
+        # A login form opens and he uses the admin credentials
 
-        inputbox = self.browser.find_element_by_id('id_username')
-        inputbox.send_keys('admin')
-        inputbox = self.browser.find_element_by_id('id_password')
-        inputbox.send_keys('admin')
-        inputbox = self.browser.find_element_by_id('id_login')
-        login = self.browser.find_element_by_id('id_login')
-        login.send_keys(Keys.ENTER)
+        self.user_login('admin','admin')
         self.wait_for_window_with_title('Modelling Platform')
 
         # He now notices a welcome message on the home page saying: Hello admin, logout
