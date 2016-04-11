@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import LoginForm
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponse
+#from django.http import HttpResponse
 
 def user_login(request):
     if request.method == 'POST':
