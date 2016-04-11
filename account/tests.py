@@ -16,7 +16,7 @@ class UserLoginTest(TestCase):
     #    self.user2 = User.objects.create_user(username='langestrst01', email='', password='8976YHT@')
 
     def test_login_url_resolves_to_login_view(self):
-        found = resolve('/account/login/')
+        found = resolve('/account/login')
         self.assertEqual(found.func, user_login)
 
     def test_user_login_page_returns_correct_html(self):
@@ -28,14 +28,14 @@ class UserLoginTest(TestCase):
         #self.assertIn('Account Login', response.content.decode())
 
     def test_user_login_page_redirects_after_post(self):
-        response = self.client.post('/account/login/', {'username': 'admin', 'password': 'admin'})
+        response = self.client.post('/account/login', {'username': 'admin', 'password': 'admin'})
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response,'/')
 
     @patch('account.views.authenticate')
     def test_calls_authenticate_with_user_and_passwd_from_post(self, mock_authenticate):
         mock_authenticate.return_value = None
-        self.client.post('/account/login/', {'username': 'admin', 'password': 'admin'})
+        self.client.post('/account/login', {'username': 'admin', 'password': 'admin'})
         mock_authenticate.assert_called_once_with(username='admin', password='admin')
 
     @patch('account.views.authenticate')
@@ -43,7 +43,7 @@ class UserLoginTest(TestCase):
         user = User.objects.create(username='admin', password='admin')
         user.backend = ''
         mock_authenticate.return_value = user
-        response = self.client.post('/account/login/', {'username': 'admin', 'password': 'admin'})
+        response = self.client.post('/account/login', {'username': 'admin', 'password': 'admin'})
         self.assertEqual(response.status_code, 302)
         #self.assertEqual(response.content.decode(), 'OK')
 
@@ -52,13 +52,13 @@ class UserLoginTest(TestCase):
         user = User.objects.create(username='admin', password='admin')
         user.backend = ''
         mock_authenticate.return_value = user
-        self.client.post('/account/login/', {'username': 'admin', 'password': 'admin'})
+        self.client.post('/account/login', {'username': 'admin', 'password': 'admin'})
         self.assertEqual(self.client.session[SESSION_KEY], str(user.pk))
 
     @patch('account.views.authenticate')
     def test_does_not_get_logged_in_if_authenticate_returns_None(self, mock_authenticate):
         mock_authenticate.return_value = None
-        self.client.post('/account/login/', {'username': 'admin', 'password': 'admin'})
+        self.client.post('/account/login', {'username': 'admin', 'password': 'admin'})
         self.assertNotIn(SESSION_KEY, self.client.session)
 
 
