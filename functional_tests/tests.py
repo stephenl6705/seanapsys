@@ -114,7 +114,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         #self.assertIn('Movie Explorer', [row.text for row in rows])
 
     def test_can_login_on_home_screen(self):
-        
+
         # Isaac noticed that he can login on the home screen
         # so he goes to the home screen and clicks on Log-in
         self.browser.get(self.server_url)
@@ -139,14 +139,14 @@ class NewVisitorTest(StaticLiveServerTestCase):
         user = self.browser.find_element_by_id('id_user')
         login = user.find_element_by_tag_name('a')
         self.assertEqual(login.text, "Hello admin, logout")
-        
+
         # He clicks on Hello admin, logout and now enters Papas credentials and hits enter
 
         user = self.browser.find_element_by_id('id_user')
         login = user.find_element_by_tag_name('a')
         login.click()
         self.wait_for_window_with_title('Log-in')
-        
+
         inputbox = self.browser.find_element_by_id('id_username')
         inputbox.send_keys('langestrst01')
         inputbox = self.browser.find_element_by_id('id_password')
@@ -160,8 +160,38 @@ class NewVisitorTest(StaticLiveServerTestCase):
         login = user.find_element_by_tag_name('a')
         self.assertEqual(login.text, "Hello Stephen, logout")
 
+    def test_can_logout_on_home_screen(self):
+        # Isaac doesn't want to remain be logged in, so he clicks on Hello Stephen, logout
+        # He know notices that the message says Log-in
+
+        self.browser.get(self.server_url)
+        user = self.browser.find_element_by_id('id_user')
+        login = user.find_element_by_tag_name('a')
+        login.click()
+        self.wait_for_window_with_title('Log-in')
+
+        inputbox = self.browser.find_element_by_id('id_username')
+        inputbox.send_keys('langestrst01')
+        inputbox = self.browser.find_element_by_id('id_password')
+        inputbox.send_keys('8976YHT@')
+        login = self.browser.find_element_by_id('id_login')
+        login.send_keys(Keys.ENTER)
+        self.wait_for_window_with_title('Modelling Platform')
+
+        user = self.browser.find_element_by_id('id_user')
+        logout = user.find_element_by_tag_name('a')
+        self.assertEqual(logout.text, "Hello Stephen, logout")
+        logout.click()
+        self.wait_for_window_with_title('Modelling Platform')
+        user = self.browser.find_element_by_id('id_user')
+        login = user.find_element_by_tag_name('a')
+        self.assertEqual(logout.text, "Log-in")
+
+
+
+
         #self.fail('Finish the test')
-        
+
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
