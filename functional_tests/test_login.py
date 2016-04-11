@@ -80,7 +80,7 @@ class UserLoginTest(FunctionalTest):
         inputbox = self.browser.find_element_by_id('id_login')
         login = self.browser.find_element_by_id('id_login')
         login.send_keys(Keys.ENTER)
-        self.wait_for_window_with_title('Shiny Apps')
+        self.wait_for_window_with_title('Modelling Platform')
 
         # He now notices a welcome message on the home page saying: Hello admin, logout
         self.user_login_assert_equal('Hello admin, logout')

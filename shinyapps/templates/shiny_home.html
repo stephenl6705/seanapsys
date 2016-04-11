@@ -11,12 +11,15 @@
 <body>
 <div class="container-fluid">
     <section class="boxes row">
-        <div class= "box_topics col-md-12">
-            <h6>Login</h6>
-            <form method="POST">
-                <input name="username" id="id_login" placeholder="Enter username"/shinyapps>
-                {% csrf_token %}
-            </form>
+        <div id=id_user class= "box_topics col-md-12">
+                {% if request.user.is_authenticated %}
+                    <a href="{% url 'logout' %}">
+                        Hello {{ request.user.first_name }}, logout
+                {% else %}
+                    <a href="{% url 'login' %}">
+                        Log-in
+                {% endif %}
+                    </a>
         </div>
         <div class= "box_topics col-md-12">
             <a href="/" style="float: right"><img src="/static/logo.png" alt="Nielsen Logo"></a>
