@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = [
     url(r'^login$', views.user_login, name='login'),
-    url(r'^logout$', logout, {'next_page': '/'},name='logout'),
+    url(r'^logout$', logout, {'next_page': '/'}, name='logout'),
 ]

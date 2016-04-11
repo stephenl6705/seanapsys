@@ -3,15 +3,20 @@ from selenium.webdriver.common.keys import Keys
 
 class HomepageLoginTest(FunctionalTest):
 
+    def user_login_assert_equal(self,text):
+        user = self.browser.find_element_by_id('id_user')
+        login = user.find_element_by_tag_name('a')
+        self.assertEqual(login.text, text)
+        return login
+
     def test_can_login_and_logout_on_home_screen(self):
 
         # Isaac noticed that he can login on the home screen
         # so he goes to the home screen and clicks on Log-in
+
         self.browser.get(self.server_url)
-        user = self.browser.find_element_by_id('id_user')
-        login = user.find_element_by_tag_name('a')
-        self.assertEqual(login.text, 'Log-in')
-        login.click()
+
+        self.user_login_assert_equal('Log-in').click()
         self.wait_for_window_with_title('Log-in')
 
         # A login form opens and he simply enters
@@ -26,17 +31,18 @@ class HomepageLoginTest(FunctionalTest):
         self.wait_for_window_with_title('Modelling Platform')
 
         # He now notices a welcome message on the home page saying: Hello admin, logout
-        user = self.browser.find_element_by_id('id_user')
-        logout = user.find_element_by_tag_name('a')
-        self.assertEqual(logout.text, "Hello admin, logout")
+        self.user_login_assert_equal('Hello admin, logout')
+
+        # When refreshing he notices it still says: Hello admin, logout
+        self.browser.refresh()
+        self.wait_for_window_with_title('Modelling Platform')
+        logout = self.user_login_assert_equal('Hello admin, logout')
 
         # He clicks on Hello admin, logout and now sees Log-in again
 
         logout.click()
         self.wait_for_window_with_title('Modelling Platform')
-        user = self.browser.find_element_by_id('id_user')
-        login = user.find_element_by_tag_name('a')
-        self.assertEqual(login.text, 'Log-in')
+        login = self.user_login_assert_equal('Log-in')
 
         # He now wants to use Papas credentials
 
@@ -52,9 +58,7 @@ class HomepageLoginTest(FunctionalTest):
         self.wait_for_window_with_title('Modelling Platform')
 
         # He now notices a welcome message on the home page saying: Hello Stephen, logout
-        user = self.browser.find_element_by_id('id_user')
-        login = user.find_element_by_tag_name('a')
-        self.assertEqual(login.text, "Hello Stephen, logout")
+        self.user_login_assert_equal('Hello Stephen, logout')
 
 
         #self.fail('Finish the test')
