@@ -1,22 +1,6 @@
 from .base import FunctionalTest
-from selenium.webdriver.common.keys import Keys
 
 class UserLoginTest(FunctionalTest):
-
-    def user_login_assert_equal(self,text):
-        user = self.browser.find_element_by_id('id_user')
-        login = user.find_element_by_tag_name('a')
-        self.assertEqual(login.text, text)
-        return login
-
-    def user_login(self,username,password):
-        inputbox = self.browser.find_element_by_id('id_username')
-        inputbox.send_keys(username)
-        inputbox = self.browser.find_element_by_id('id_password')
-        inputbox.send_keys(password)
-        inputbox = self.browser.find_element_by_id('id_login')
-        login = self.browser.find_element_by_id('id_login')
-        login.send_keys(Keys.ENTER)
 
     def test_can_login_and_logout_on_home_screen(self):
 

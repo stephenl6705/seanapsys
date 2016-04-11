@@ -3,7 +3,7 @@ import os
 
 def setup_items(Group, Item):
     group1 = Group.objects.create(username='langestrst01', selected=False)
-    group2 = Group.objects.create(username='ruser', selected=False)
+    group2 = Group.objects.create(username='ruser', selected=True)
 
     Item.objects.create(itemid="id_shinyapp1", name="Hello App", dirname="hello", group=group1)
     Item.objects.create(itemid="id_shinyapp2", name="Movie Explorer", dirname="movie_explorer", group=group1)
@@ -16,11 +16,13 @@ def save_selected_group(Group,selected_username,selected_status=True):
             group.selected = selected_status
             group.save()
             found = True
-    if selected_status == True and found == True:
-        for group in Group.objects.all():
-            if group.username != selected_username:
-                group.selected = False
-                group.save()
+    if found == True:
+        if selected_status == True:
+            for group in Group.objects.all():
+                if group.username != selected_username:
+                    group.selected = False
+                    group.save()
+    return found
 
 def get_selected_item(Item,Group):
     selected_group = ''

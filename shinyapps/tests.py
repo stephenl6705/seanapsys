@@ -1,11 +1,14 @@
-from unittest import skip
+#from unittest import skip
 from shinyapps.models import ShinyItem, ShinyGroup
 from django.template.loader import render_to_string
 from django.core.urlresolvers import resolve
 from django.test import TestCase
-from django.http import HttpRequest
 from shinyapps.views import shiny_page
-from setup_db import setup_items, save_selected_group
+from setup_db import setup_items
+from django.contrib.auth import get_user_model
+User = get_user_model()
+#from unittest.mock import patch
+from django.http import HttpRequest
 
 class ShinyPageTest(TestCase):
 
@@ -14,28 +17,28 @@ class ShinyPageTest(TestCase):
         self.assertEqual(found.func, shiny_page)
 
     def test_shiny_page_returns_correct_html(self):
-        request = HttpRequest()
-        setup_items(ShinyGroup, ShinyItem)
-        response = shiny_page(request)
+        response = self.client.get('/shinyapps')
         expected_html = render_to_string('shiny_home.html')
-        #self.assertEqual(response.content.decode(), expected_html)
-        self.assertIn('Hello App', response.content.decode())
+        self.assertEqual(response.content.decode(), expected_html)
 
-    def test_shiny_page_returns_correct_list_after_a_username_POST_request(self):
-        request = HttpRequest()
+    def test_shiny_page_returns_correct_list_after_login(self):
         setup_items(ShinyGroup, ShinyItem)
-        request.method = 'POST'
-
-        request.POST['username'] = 'langestrst01'
-        save_selected_group(ShinyGroup,'langestrst01',selected_status=True)
+        request = HttpRequest()
+        user = User.objects.create(username='admin',password='admin')
+        request.user = user
+        response = shiny_page(request)
+        self.assertNotIn('Hello App', response.content.decode())
+        self.assertNotIn('Movie Explorer', response.content.decode())
+        user = User.objects.create(username='ruser',password='ruser')
+        request.user = user
+        response = shiny_page(request)
+        self.assertIn('Hello App', response.content.decode())
+        self.assertNotIn('Movie Explorer', response.content.decode())
+        user = User.objects.create(username='langestrst01',password='8976YHT@')
+        request.user = user
         response = shiny_page(request)
         self.assertIn('Hello App', response.content.decode())
         self.assertIn('Movie Explorer', response.content.decode())
-
-        request.POST['username'] = 'ruser'
-        save_selected_group(ShinyGroup,'ruser',selected_status=True)
-        response = shiny_page(request)
-        self.assertIn('Hello App', response.content.decode())
 
 
 class ShinyModelTest(TestCase):

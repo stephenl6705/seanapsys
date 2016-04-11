@@ -5,10 +5,26 @@ class ShinyAppsTest(FunctionalTest):
 
     def test_shinyapps_screen_displays_apps_from_logged_in_user_only(self):
 
+        # Isaac goes to the shiny apps page and sees no apps
+
+        self.browser.get(self.server_url)
+
+        foundapp=False
+        try:
+            shinyapp1 = self.browser.find_element_by_id('id_shinyapp1')
+            foundapp=True
+        except:
+            pass
+        self.assertEqual(foundapp,False)
+
+        # He then logs in, redirecting him to the homepage so he clicks back into Shiny Apps
+
+        self.user_login_assert_equal('Log-in').click()
+        self.wait_for_window_with_title('Log-in')
+        self.user_login('langestrst01','8976YHT@')
+        self.wait_for_window_with_title('Modelling Platform')
+
         self.get_shinyapps_link().click()
-
-        # He now finds himself on a page showing Shiny Applications
-
         self.wait_for_window_with_title('Shiny Apps')
 
         # He now notices that there are 2 apps
