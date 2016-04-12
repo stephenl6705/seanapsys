@@ -1,7 +1,7 @@
 #from unittest import skip
 from shinyapps.models import ShinyItem, ShinyGroup
 from django.template.loader import render_to_string
-from django.core.urlresolvers import resolve
+from django.core.urlresolvers import resolve, reverse
 from django.test import TestCase
 from shinyapps.views import shiny_page
 from setup_db import setup_items
@@ -13,11 +13,11 @@ from django.http import HttpRequest
 class ShinyPageTest(TestCase):
 
     def test_root_url_resolves_to_shiny_page_view(self):
-        found = resolve('/shinyapps')
+        found = resolve(reverse('shiny_home'))
         self.assertEqual(found.func, shiny_page)
 
     def test_shiny_page_returns_correct_html(self):
-        response = self.client.get('/shinyapps')
+        response = self.client.get(reverse('shiny_home'))
         expected_html = render_to_string('shiny_home.html')
         self.assertEqual(response.content.decode(), expected_html)
 

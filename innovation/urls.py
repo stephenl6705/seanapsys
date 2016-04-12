@@ -6,7 +6,7 @@ from shinyapps import views as shiny_views
 
 urlpatterns = [
     url(r'^$', home_views.home_page, name='home'),
-    url(r'^shinyapps$', shiny_views.shiny_page, name='shiny_home'),
+    url(r'^shinyapps/$', shiny_views.shiny_page, name='shiny_home'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^account/', include('account.urls')),
 ]
