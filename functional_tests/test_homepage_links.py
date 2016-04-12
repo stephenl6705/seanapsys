@@ -34,12 +34,34 @@ class HomepageLinksTest(FunctionalTest):
         self.wait_for_window_with_title('RStudio Sign In')
 
 
-    def test_can_link_to_shiny_site(self):
+    def test_can_link_to_shiny_site_when_logged_in_only(self):
 
-        # Isaac goes back to the innovation home site and selects the shiny applications site
+        self.browser.get(self.server_url)
+
+        # Isaac goes to the innovation home site and sees the Rstudio links only
+
+        FoundShinyApps=False
+        try:
+            shinyapps_link = self.get_shinyapps_link()
+            FoundShinyApps = True
+        except:
+            pass
+        self.assertEqual(FoundShinyApps, False)
+
+        # He then logs in
+
+        self.user_login_assert_equal('Log-in').click()
+        self.wait_for_window_with_title('Log-in')
+        self.user_login('ruser','ruser')
+
+        self.wait_for_window_with_title('Modelling Platform')
+
+        # He now notices the Shiny Apps link so he checks that out
+
         shinyapps_link = self.get_shinyapps_link()
         self.assertEqual(shinyapps_link.text,"Shiny Apps","The link was:\n%s" % (shinyapps_link.text,))
         shinyapps_link.click()
+
         # He now finds himself on a page showing Shiny Applications
         self.wait_for_window_with_title('Shiny Apps')
 

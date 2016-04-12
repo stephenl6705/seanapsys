@@ -27,7 +27,9 @@
                 <h1>Modelling Platform</h1>
                 <h2 id=id_rstudio><a href='https://www.seanapsys.com/rstudio'>RStudio</a></h2>
                 <h2 id=id_crstudio><a href='http://104.155.208.62:8787'>RStudio (cloud)</a></h2>
-                <h2 id=id_shinyapps><a href='/shinyapps'>Shiny Apps</a></h2>
+                {% if request.user.is_authenticated %}
+                    <h2 id=id_shinyapps><a href='/shinyapps'>Shiny Apps</a></h2>
+                {% endif %}
             </div>
         </div>
     </section>

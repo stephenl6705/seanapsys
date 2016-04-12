@@ -42,24 +42,28 @@ class UserLoginTest(FunctionalTest):
         # He now notices a welcome message on the home page saying: Hello Stephen, logout
         self.user_login_assert_equal('Hello Stephen, logout')
 
-    def test_can_login_and_logout_on_shinyapps_screen(self):
+    def test_can_logout_on_shinyapps_screen(self):
 
-        # Isaac goes to the Shiny apps page to see if he can login from there
+        # Isaac logs in
 
         self.browser.get(self.server_url)
 
-        self.get_shinyapps_link().click()
-        self.wait_for_window_with_title('Shiny Apps')
         self.user_login_assert_equal('Log-in').click()
         self.wait_for_window_with_title('Log-in')
+        self.user_login('ruser','ruser')
 
-        # A login form opens and he uses the admin credentials
-
-        self.user_login('admin','admin')
         self.wait_for_window_with_title('Modelling Platform')
 
-        # He now notices a welcome message on the home page saying: Hello admin, logout
-        self.user_login_assert_equal('Hello admin, logout')
+        # He then goes to the Shiny apps page to see if he can logout from there
+
+        self.get_shinyapps_link().click()
+        self.wait_for_window_with_title('Shiny Apps')
+        self.user_login_assert_equal('Hello ruser, logout').click()
+        self.wait_for_window_with_title('Modelling Platform')
+
+        # He is now returned to the home page with the option to Log-in
+
+        self.user_login_assert_equal('Log-in')
 
 
         #self.fail('Finish the test')
